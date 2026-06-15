@@ -17,9 +17,9 @@ description: "Extract visual styles from scientific chart screenshots and genera
 1. **Upload Image**: User provides chart screenshot (drag-drop or path)
 2. **AI Vision Analysis**: Use current AI's vision capabilities to analyze the chart
 3. **Extract Style**: Identify chart type, colors, fonts, layout, theme
-4. **Generate Code**: Create ggplot2 theme + scale functions (with ggthemes options)
+4. **Generate Code**: Create both R (ggplot2) and Python (matplotlib/seaborn) versions
 5. **Create Preview**: Generate example chart with mock data
-6. **Output**: Save code template + documentation + preview image
+6. **Output**: Save code templates + customization guide + preview image
 
 ## AI Vision Analysis (Primary Method)
 
@@ -93,7 +93,48 @@ Return analysis as structured data:
 
 ## Code Generation
 
-Based on AI analysis, generate ggplot2 code with these components:
+Based on AI analysis, generate both R and Python code:
+
+### R Version (ggplot2)
+
+See R output format below.
+
+### Python Version (matplotlib/seaborn)
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+# Set style
+plt.rcParams.update({
+    'font.family': 'sans-serif',
+    'font.sans-serif': ['Arial', 'Helvetica'],
+    'font.size': 10,
+    'axes.linewidth': 0.5,
+    'axes.grid': False
+})
+
+# Colors
+colors = ['#E07A5F', '#81B29A']
+
+# Create figure
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Plot data
+ax.plot(x, y, color=colors[0], marker='o', label='Group 1')
+
+# Customize
+ax.set_xlabel('X Label', fontsize=11)
+ax.set_ylabel('Y Label', fontsize=11)
+ax.legend()
+plt.tight_layout()
+plt.savefig('chart.png', dpi=300, bbox_inches='tight')
+plt.savefig('chart.pdf', bbox_inches='tight')
+```
+
+## Output Format
 
 ### Theme Selection
 
@@ -125,12 +166,17 @@ scale_fill_brewer(palette = "Set1")
 
 Generate these files:
 
+### README.md
+- Source image description
+- Extracted style summary (colors, fonts, theme)
+- File structure overview
+- Quick start instructions
+
 ### theme.R
 ```r
 # Extracted theme from [source description]
 library(ggplot2)
 
-# Option 1: Custom theme
 theme_extracted <- theme_classic(base_size = 8) +
   theme(
     axis.line = element_line(linewidth = 0.35, colour = "black"),
@@ -140,17 +186,11 @@ theme_extracted <- theme_classic(base_size = 8) +
     panel.grid = element_blank(),
     legend.position = "none"
   )
-
-# Option 2: Using ggthemes
-# library(ggthemes)
-# theme_extracted <- theme_economist() +
-#   theme(legend.position = "none")
 ```
 
 ### colors.R
 ```r
 # Extracted color palette from [source description]
-# Legend labels should be descriptive, not numbered
 colors_extracted <- c("Natural Language" = "#E07A5F", "Code Grounding" = "#81B29A")
 
 scale_fill_extracted <- scale_fill_manual(values = colors_extracted)
@@ -159,13 +199,11 @@ scale_color_extracted <- scale_color_manual(values = colors_extracted)
 
 ### example.R
 ```r
-# Example usage with mock data
+# R example with ggplot2
 library(ggplot2)
-# library(ggthemes)  # Uncomment if using ggthemes
 source("theme.R")
 source("colors.R")
 
-# Mock data
 df <- data.frame(
   x = rnorm(100),
   y = rnorm(100),
@@ -179,9 +217,41 @@ ggplot(df, aes(x = x, y = y, color = group)) +
   scale_color_extracted
 ```
 
-### README.md
-- Source image description
-- Extracted style summary (colors, fonts, theme)
-- Usage instructions
-- Customization tips
-- ggthemes alternatives
+### example.py
+```python
+# Python example with matplotlib
+import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
+
+# Colors
+colors = ['#E07A5F', '#81B29A']
+
+# Mock data
+np.random.seed(42)
+df = pd.DataFrame({
+    'x': np.random.randn(100),
+    'y': np.random.randn(100),
+    'group': np.tile(['A', 'B'], 50)
+})
+
+# Plot
+fig, ax = plt.subplots(figsize=(10, 6))
+for i, group in enumerate(['A', 'B']):
+    subset = df[df['group'] == group]
+    ax.scatter(subset['x'], subset['y'], c=colors[i], label=group, alpha=0.6, s=40)
+
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.legend()
+plt.tight_layout()
+plt.savefig('chart.png', dpi=300, bbox_inches='tight')
+```
+
+### CUSTOMIZATION.md
+- How to change input data
+- How to modify colors
+- How to change grouping variables
+- How to adjust font sizes
+- How to modify layout
+- R and Python specific instructions
