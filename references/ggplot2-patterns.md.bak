@@ -1,0 +1,158 @@
+# Common ggplot2 Style Patterns
+
+## Theme Selection Guide
+
+| Original Chart Style | Recommended Base Theme |
+|---------------------|------------------------|
+| Clean white background | `theme_bw()` |
+| Minimal grid lines | `theme_minimal()` |
+| Classic academic look | `theme_classic()` |
+| Dark background | `theme_dark()` |
+| Publication-ready | `theme_cowplot()` |
+
+## Color Palette Patterns
+
+### Nature Journal Style
+```r
+nature_colors <- c("#E64B35", "#4DBBD5", "#00A087", "#3C5488", 
+                   "#F39B7F", "#8491B4", "#91D1C2", "#DC0000")
+```
+
+### Science Journal Style
+```r
+science_colors <- c("#3B4992", "#EE0000", "#008B45", "#631879",
+                    "#008280", "#BB0021", "#5F559B", "#A20056")
+```
+
+### Nature Publishing Group Palette
+```r
+npg_colors <- c("#E64B35", "#4DBBD5", "#00A087", "#3C5488",
+                "#F39B7F", "#8491B4", "#91D1C2", "#DC0000", "#7E6148")
+```
+
+### JAMA Style
+```r
+jama_colors <- c("#374E55", "#DF8F44", "#00A1D5", "#B24745", 
+                 "#79AF12", "#6A6599", "#80796B", "#0AB398")
+```
+
+## Typography Patterns
+
+### Serif Font (Nature/Science)
+```r
+theme(
+  text = element_text(family = "serif"),
+  plot.title = element_text(size = 12, face = "bold"),
+  axis.title = element_text(size = 10),
+  axis.text = element_text(size = 8)
+)
+```
+
+### Sans-serif Font (PLOS/IEEE)
+```r
+theme(
+  text = element_text(family = "sans"),
+  plot.title = element_text(size = 14, face = "bold"),
+  axis.title = element_text(size = 12),
+  axis.text = element_text(size = 10)
+)
+```
+
+## Layout Patterns
+
+### Minimal Grid
+```r
+theme(
+  panel.grid.major = element_line(color = "grey90", linewidth = 0.2),
+  panel.grid.minor = element_blank(),
+  panel.background = element_rect(fill = "white")
+)
+```
+
+### No Grid (Classic)
+```r
+theme_classic() +
+theme(
+  axis.line = element_line(linewidth = 0.5),
+  axis.ticks = element_line(linewidth = 0.3)
+)
+```
+
+### Publication Ready
+```r
+theme_bw() +
+theme(
+  panel.grid.major = element_line(color = "grey90", linewidth = 0.2),
+  panel.grid.minor = element_blank(),
+  panel.border = element_rect(color = "black", fill = NA, linewidth = 0.5),
+  axis.line = element_line(color = "black", linewidth = 0.3),
+  legend.position = "top",
+  strip.background = element_rect(fill = "grey95")
+)
+```
+
+## Common Scale Functions
+
+### Discrete Colors
+```r
+scale_color_manual(values = c("#E64B35", "#4DBBD5", "#00A087"))
+scale_fill_manual(values = c("#E64B35", "#4DBBD5", "#00A087"))
+```
+
+### Continuous Color
+```r
+scale_color_viridis_c(option = "plasma")
+scale_fill_viridis_c(option = "viridis")
+```
+
+### Size Scale
+```r
+scale_size_continuous(range = c(1, 5))
+scale_size_manual(values = c(2, 4, 6))
+```
+
+## Facet Patterns
+
+### Single Row
+```r
+facet_wrap(~variable, nrow = 1)
+```
+
+### Grid Layout
+```r
+facet_grid(row_var ~ col_var, scales = "free_y")
+```
+
+## Legend Patterns
+
+### Top Legend
+```r
+theme(legend.position = "top", legend.box = "horizontal")
+```
+
+### Right Legend (Default)
+```r
+theme(legend.position = "right")
+```
+
+### No Legend
+```r
+theme(legend.position = "none")
+```
+
+## Axis Patterns
+
+### Log Scale
+```r
+scale_y_continuous(trans = "log10")
+```
+
+### Percent Format
+```r
+scale_y_continuous(labels = scales::percent)
+```
+
+### Breaks Control
+```r
+scale_x_continuous(breaks = seq(0, 100, by = 20))
+```
