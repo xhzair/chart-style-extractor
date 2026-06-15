@@ -37,20 +37,18 @@ dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
 
 # --- Locate sibling scripts ---------------------------------------------------
 
-script_dir <- dirname(sys.frame(1)$ofile %||% {
-  # Fallback when sourced interactively
-  cmd <- commandArgs(trailingOnly = FALSE)
-  file_arg <- grep("^--file=", cmd, value = TRUE)
-  if (length(file_arg) > 0) {
-    dirname(normalizePath(sub("^--file=", "", file_arg[1])))
-  } else {
-    getwd()
+script_dir <- tryCatch(
+  dirname(sys.frame(1)$ofile),
+  error = function(e) {
+    cmd <- commandArgs(trailingOnly = FALSE)
+    file_arg <- grep("^--file=", cmd, value = TRUE)
+    if (length(file_arg) > 0) {
+      dirname(normalizePath(sub("^--file=", "", file_arg[1])))
+    } else {
+      getwd()
+    }
   }
-})
-
-if (!exists("%||%", mode = "function")) {
-  `%||%` <- function(x, y) if (is.null(x)) y else x
-}
+)
 
 extract_script <- file.path(script_dir, "extract_colors.R")
 preview_script <- file.path(script_dir, "generate_preview.R")

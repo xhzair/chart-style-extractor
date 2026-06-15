@@ -30,7 +30,8 @@ if (!file.exists(image_path)) {
 extract_colors <- function(image_path, n_colors = 4) {
   img <- load.image(image_path)
 
-  if (dim(img)[3] < 3) {
+  # imager stores RGB as dim: width x height x depth(1) x channels(3)
+  if (dim(img)[4] < 3) {
     stop("Image must have at least 3 color channels (RGB).")
   }
 
