@@ -18,8 +18,67 @@ description: "Extract visual styles from scientific chart screenshots and genera
 2. **AI Vision Analysis**: Use current AI's vision capabilities to analyze the chart
 3. **Extract Style**: Identify chart type, colors, fonts, layout, theme
 4. **Generate Code**: Create both R (ggplot2) and Python (matplotlib/seaborn) versions
-5. **Create Preview**: Generate example chart with mock data
+5. **Apply to Data**: Help user apply extracted style to their own data
 6. **Output**: Save code templates + customization guide + preview image
+
+## Apply to User's Data
+
+After extracting style, offer to apply it to the user's data:
+
+### Step 1: Get User's Data
+
+```r
+# Ask user to provide data file
+df <- read.csv("user_data.csv")
+
+# Show data summary
+cat("Columns:", paste(names(df), collapse = ", "), "\n")
+cat("Rows:", nrow(df), "\n")
+head(df)
+```
+
+### Step 2: Map Variables
+
+Help user map their data to the chart:
+
+```r
+# Ask user which columns to use
+# X axis: [user selects column]
+# Y axis: [user selects column]
+# Color/Group: [user selects column] (optional)
+```
+
+### Step 3: Generate Customized Code
+
+```r
+# Apply extracted style to user's data
+library(ggplot2)
+source("theme_extracted.R")
+source("colors_extracted.R")
+
+# User's data
+df <- read.csv("user_data.csv")
+
+# Generate plot with user's data + extracted style
+ggplot(df, aes(x = user_x_col, y = user_y_col, color = user_group_col)) +
+  geom_point(alpha = 0.6) +
+  geom_smooth(method = "loess", se = FALSE) +
+  theme_extracted +
+  scale_color_extracted
+```
+
+## When to Suggest Other Skills
+
+After basic style application, suggest advanced skills if:
+
+| Need | Suggest |
+|------|---------|
+| Multi-panel figures | `nature-figure` skill |
+| Statistical annotations | `nature-figure` skill |
+| Complex layouts | `nature-figure` skill |
+| Journal-specific formatting | `nature-figure` skill |
+
+**Don't suggest unless user asks for advanced features.**
 
 ## AI Vision Analysis (Primary Method)
 
