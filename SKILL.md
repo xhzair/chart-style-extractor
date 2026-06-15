@@ -39,6 +39,7 @@ When the user uploads a chart image, analyze and extract:
 - Extract 2-5 dominant colors as hex codes
 - Identify: data colors, background, text, grid lines
 - Map to ggplot2 scales
+- **Legend labels must be descriptive** (e.g., "Treatment", "Control") not numbered ("Color 1", "Color 2")
 
 #### 3. Typography
 - Font family (serif like Times New Roman, sans-serif like Arial, or monospace)
@@ -149,7 +150,8 @@ theme_extracted <- theme_classic(base_size = 8) +
 ### colors.R
 ```r
 # Extracted color palette from [source description]
-colors_extracted <- c("#5B9BD5", "#E74C3C")
+# Legend labels should be descriptive, not numbered
+colors_extracted <- c("Natural Language" = "#E07A5F", "Code Grounding" = "#81B29A")
 
 scale_fill_extracted <- scale_fill_manual(values = colors_extracted)
 scale_color_extracted <- scale_color_manual(values = colors_extracted)
