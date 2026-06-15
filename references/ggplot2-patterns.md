@@ -124,6 +124,68 @@ theme_minimal_grid <- theme_minimal() +
   )
 ```
 
+### ggthemes Package Themes
+
+#### Economist Style
+```r
+library(ggthemes)
+theme_economist() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(size = 12, face = "bold")
+  )
+```
+
+#### Wall Street Journal
+```r
+library(ggthemes)
+theme_wsj() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+```
+
+#### FiveThirtyEight
+```r
+library(ggthemes)
+theme_fivethirtyeight() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+```
+
+#### Tufte (Minimalist)
+```r
+library(ggthemes)
+theme_tufte() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+```
+
+#### Stata Style
+```r
+library(ggthemes)
+theme_stata() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+```
+
+#### Excel Style
+```r
+library(ggthemes)
+theme_excel() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold"),
+    legend.position = "bottom"
+  )
+```
+
 ### Presentation Themes
 
 #### Dark Background Theme
