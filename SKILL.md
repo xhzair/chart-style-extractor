@@ -9,17 +9,124 @@ description: "Extract visual styles from scientific chart screenshots and genera
 
 - User uploads a scientific chart screenshot/image
 - User asks to "extract style from this figure"
-- User wants to replicate a chart's look in ggplot2
+- User wants to replicate a chart's look in ggplot2/matplotlib
 - User mentions "match this style" or "similar to this paper"
+- User has Excel charts they want to convert to R/Python
+- User has Visio/draw.io diagrams they want to replicate
+
+## Supported Input Formats
+
+### Images (Primary)
+- PNG, JPG, JPEG, TIFF, BMP, SVG
+- Screenshots from papers, websites, presentations
+
+### Excel Charts
+- .xlsx, .xls files with embedded charts
+- Extract chart type, data, colors, styles
+- Convert to ggplot2/matplotlib code
+
+### Visio Files
+- .vsd, .vsdx files
+- Extract diagram structure and styles
+- Convert to ggplot2 (for data charts) or SVG
+
+### Draw.io Files
+- .drawio, .xml files
+- Extract diagram structure
+- Convert to ggplot2 (for data charts) or SVG
 
 ## Workflow
 
-1. **Upload Image**: User provides chart screenshot (drag-drop or path)
-2. **AI Vision Analysis**: Use current AI's vision capabilities to analyze the chart
-3. **Extract Style**: Identify chart type, colors, fonts, layout, theme
-4. **Generate Code**: Create both R (ggplot2) and Python (matplotlib/seaborn) versions
-5. **Apply to Data**: Help user apply extracted style to their own data
-6. **Output**: Save code templates + customization guide + preview image
+1. **Upload File**: User provides chart image, Excel, Visio, or draw.io file
+2. **Detect Format**: Identify input type and extract data/styles
+3. **AI Vision Analysis**: Use current AI's vision capabilities to analyze the chart
+4. **Extract Style**: Identify chart type, colors, fonts, layout, theme
+5. **Generate Code**: Create both R (ggplot2) and Python (matplotlib/seaborn) versions
+6. **Apply to Data**: Help user apply extracted style to their own data
+7. **Output**: Save code templates + customization guide + preview image
+
+## Format-Specific Handling
+
+### For Images (PNG, JPG, etc.)
+- Use AI vision to analyze directly
+- Extract colors via k-means or AI analysis
+- Identify chart type, fonts, layout
+
+### For Excel Files (.xlsx, .xls)
+```r
+# R approach
+library(readxl)
+library(ggplot2)
+
+# Read Excel file
+wb <- load_workbook("chart.xlsx")
+
+# Extract chart data (if available)
+# Or read data ranges directly
+df <- read_excel("chart.xlsx", sheet = "Sheet1")
+
+# Generate ggplot2 code from data
+ggplot(df, aes(x = col1, y = col2)) + geom_col()
+```
+
+```python
+# Python approach
+import openpyxl
+import pandas as pd
+
+# Load workbook
+wb = openpyxl.load_workbook("chart.xlsx")
+
+# Extract chart data
+for sheet in wb.sheetnames:
+    ws = wb[sheet]
+    # Read data range
+    data = ws.values
+```
+
+### For Visio Files (.vsd, .vsdx)
+```r
+# R approach - convert to image first
+library(rvest)
+library(xml2)
+
+# Visio files are XML-based
+# Extract shapes and connections
+# Convert to SVG or image for AI analysis
+```
+
+```python
+# Python approach
+import zipfile
+import xml.etree.ElementTree as ET
+
+# Visio files are ZIP archives with XML
+with zipfile.ZipFile("diagram.vsdx", 'r') as z:
+    with z.open("visio/vlm1.xml") as f:
+        tree = ET.parse(f)
+        root = tree.getroot()
+        # Extract shapes and styles
+```
+
+### For Draw.io Files (.drawio, .xml)
+```r
+# R approach - parse XML
+library(xml2)
+
+# Draw.io files are XML
+doc <- read_xml("diagram.drawio")
+shapes <- xml_find_all(doc, "//mxGraphModel/root/mxCell")
+```
+
+```python
+# Python approach
+import xml.etree.ElementTree as ET
+
+# Parse draw.io XML
+tree = ET.parse("diagram.drawio")
+root = tree.getroot()
+shapes = root.findall(".//mxCell")
+```
 
 ## Apply to User's Data
 
